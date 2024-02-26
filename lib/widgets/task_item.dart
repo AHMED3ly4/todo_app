@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import '../app_theme.dart';
 
 class TaskItem extends StatelessWidget {
+  const TaskItem({super.key});
+
 
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.all(15),
+      margin: const EdgeInsets.all(15),
       height: 115,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 20
       ),
@@ -50,7 +52,7 @@ class TaskItem extends StatelessWidget {
                 color:AppTheme.blue,
                 borderRadius: BorderRadius.circular(10)
             ),
-            child: Icon(
+            child: const Icon(
               Icons.check,
               color: Colors.white,
               size: 38,

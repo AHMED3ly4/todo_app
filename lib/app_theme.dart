@@ -38,5 +38,12 @@ class AppTheme{
       showDragHandle: true,
       dragHandleColor: blue
     ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: blue,
+      foregroundColor: white
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      selectedItemColor: blue
+    ),
   );
 }

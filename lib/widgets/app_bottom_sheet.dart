@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AppBottomSheet extends StatefulWidget {
+  const AppBottomSheet({super.key});
+
 
   @override
   State<AppBottomSheet> createState() => _AppBottomSheetState();
@@ -17,7 +19,7 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
     TimeOfDay selectedTime=TimeOfDay.now();
     return Container(
       height: MediaQuery.of(context).size.height *0.8,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 15,
         horizontal: 30
       ),
@@ -56,7 +58,7 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
                   context: context,
                   initialDate: now,
                   firstDate: now,
-                  lastDate: now.add(Duration(days: 365),),
+                  lastDate: now.add(const Duration(days: 365),),
                   initialEntryMode: DatePickerEntryMode.calendarOnly,
                 );
                 selected != null ? selectedDate =selected :null;

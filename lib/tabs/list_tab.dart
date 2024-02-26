@@ -7,6 +7,8 @@ import 'package:todo_app/setting_provider.dart';
 import '../widgets/task_item.dart';
 class ListTab extends StatelessWidget {
   static const String routeName='list tab';
+
+  const ListTab({super.key});
   @override
   Widget build(BuildContext context) {
     SettingProvider settingProvider =Provider.of(context);
@@ -39,7 +41,7 @@ class ListTab extends StatelessWidget {
       },
     ),
         Expanded(
-          child: ListView.builder(itemBuilder: (context,index)=>TaskItem(),
+          child: ListView.builder(itemBuilder: (context,index)=>const TaskItem(),
             itemCount: 10,
           ),
         ),
