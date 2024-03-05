@@ -14,7 +14,11 @@ class AppTheme{
     appBarTheme: AppBarTheme(
       backgroundColor: blue,
       foregroundColor: white,
-      elevation: 0
+      elevation: 0,
+      titleTextStyle: TextStyle(
+        fontWeight: FontWeight.w700,
+        fontSize: 22,
+      ),
     ),
     textTheme: TextTheme(
       headlineLarge: const TextStyle(

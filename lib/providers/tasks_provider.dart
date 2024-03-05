@@ -4,7 +4,9 @@ import 'package:todo_app/models/task_model.dart';
 
 class TasksProvider with ChangeNotifier{
   List<TaskModel> tasks=[];
+
   DateTime date=DateTime.now();
+
   void getTasks()async{
     final allTasks = await FirebaseUtils.getAllTasksFromFireStore();
     tasks = allTasks.where((task) =>

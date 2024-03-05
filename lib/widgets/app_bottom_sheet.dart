@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/firebase_utils.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/providers/tasks_provider.dart';
+import 'package:todo_app/widgets/select_date.dart';
 
 class AppBottomSheet extends StatefulWidget {
   const AppBottomSheet({super.key});
@@ -16,9 +18,9 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
   DateTime selectedDate = DateTime.now();
   final  taskNameController=TextEditingController();
   final taskDescController=TextEditingController();
+  final dateFormat = DateFormat('dd/MM/yyyy');
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd/MM/yyyy');
     var now = DateTime.now();
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
@@ -50,27 +52,21 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
                 textAlign: TextAlign.start,
               ),
             ),
-            GestureDetector(
-              onTap: () async {
-                final selected = await showDatePicker(
-                  context: context,
-                  initialDate: selectedDate,
-                  firstDate: now,
-                  lastDate: now.add(
-                    const Duration(days: 365),
-                  ),
-                  initialEntryMode: DatePickerEntryMode.calendarOnly,
-                );
-                selected != null ? selectedDate = selected : null;
-                setState(() {});
-              },
-              child: Text(
-                dateFormat.format(selectedDate),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(fontSize: 18),
-              ),
+            SelectDate(
+                onTab: () async {
+              final selected = await showDatePicker(
+                context: context,
+                initialDate: selectedDate,
+                firstDate: now,
+                lastDate: now.add(
+                  const Duration(days: 365),
+                ),
+                initialEntryMode: DatePickerEntryMode.calendarOnly,
+              );
+              selected != null ? selectedDate = selected : null;
+              setState(() {});
+            },
+              text: dateFormat.format(selectedDate),
             ),
             ElevatedButton(
               onPressed: () {
@@ -80,14 +76,21 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
                     dateTime: selectedDate,
                 ),
                 ).timeout(
-                  Duration(seconds: 1),
+                  const Duration(seconds: 1),
                   onTimeout: () {
                     Provider.of<TasksProvider>(context,listen: false).getTasks();
                     Navigator.of(context).pop(context);
-                    print('Success');
                   },
                 ).catchError((_){
-                  print('error! please try again!');
+                  Fluttertoast.showToast(
+                      msg: "OPS! something went wrong.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
                 });
               },
               child: const Text('ADD TASK'),
