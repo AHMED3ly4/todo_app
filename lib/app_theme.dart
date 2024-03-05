@@ -14,11 +14,7 @@ class AppTheme{
     appBarTheme: AppBarTheme(
       backgroundColor: blue,
       foregroundColor: white,
-      elevation: 0,
-      titleTextStyle: TextStyle(
-        fontWeight: FontWeight.w700,
-        fontSize: 22,
-      ),
+      elevation: 0
     ),
     textTheme: TextTheme(
       headlineLarge: const TextStyle(
@@ -41,13 +37,6 @@ class AppTheme{
       backgroundColor: white,
       showDragHandle: true,
       dragHandleColor: blue
-    ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: blue,
-      foregroundColor: white
-    ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      selectedItemColor: blue
     ),
   );
 }
