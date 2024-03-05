@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/firebase_utils.dart';
+import 'package:todo_app/models/task_model.dart';
+import 'package:todo_app/providers/tasks_provider.dart';
+import 'package:todo_app/widgets/select_date.dart';
 
 class AppBottomSheet extends StatefulWidget {
+  const AppBottomSheet({super.key});
 
   @override
   State<AppBottomSheet> createState() => _AppBottomSheetState();
 }
 
 class _AppBottomSheetState extends State<AppBottomSheet> {
+  DateTime selectedDate = DateTime.now();
+  final  taskNameController=TextEditingController();
+  final taskDescController=TextEditingController();
+  final dateFormat = DateFormat('dd/MM/yyyy');
   @override
   Widget build(BuildContext context) {
-    final dateFormat =DateFormat('dd/MM/yyyy');
-    final timeFormat =DateFormat('Hm');
-    var now=DateTime.now();
-    DateTime selectedDate=DateTime.now();
-    TimeOfDay selectedTime=TimeOfDay.now();
+    var now = DateTime.now();
     return Container(
-      height: MediaQuery.of(context).size.height *0.8,
-      padding: EdgeInsets.symmetric(
-        vertical: 15,
-        horizontal: 30
-      ),
+      height: MediaQuery.of(context).size.height * 0.8,
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -29,76 +33,67 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             TextFormField(
-              decoration: const InputDecoration(
-                  hintText: 'Enter your task'
-              ),
+              decoration: const InputDecoration(hintText: 'Enter your task'),
+              controller: taskNameController,
             ),
             TextFormField(
               decoration: const InputDecoration(
-                  hintText: 'Add description',
+                hintText: 'Add description',
               ),
+              controller: taskDescController,
               maxLines: 6,
             ),
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(
-                  vertical: 10
-              ),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 'Select Date',
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.start,
               ),
             ),
-            GestureDetector(
-              onTap: ()async{
-                final selected= await showDatePicker(
-                  context: context,
-                  initialDate: now,
-                  firstDate: now,
-                  lastDate: now.add(Duration(days: 365),),
-                  initialEntryMode: DatePickerEntryMode.calendarOnly,
-                );
-                selected != null ? selectedDate =selected :null;
-                setState(() {
-
+            SelectDate(
+                onTab: () async {
+              final selected = await showDatePicker(
+                context: context,
+                initialDate: selectedDate,
+                firstDate: now,
+                lastDate: now.add(
+                  const Duration(days: 365),
+                ),
+                initialEntryMode: DatePickerEntryMode.calendarOnly,
+              );
+              selected != null ? selectedDate = selected : null;
+              setState(() {});
+            },
+              text: dateFormat.format(selectedDate),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                FirebaseUtils.addTaskToFireBase(TaskModel(
+                    title: taskNameController.text,
+                    description: taskDescController.text,
+                    dateTime: selectedDate,
+                ),
+                ).timeout(
+                  const Duration(seconds: 1),
+                  onTimeout: () {
+                    Provider.of<TasksProvider>(context,listen: false).getTasks();
+                    Navigator.of(context).pop(context);
+                  },
+                ).catchError((_){
+                  Fluttertoast.showToast(
+                      msg: "OPS! something went wrong.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
                 });
               },
-              child: Text(
-                dateFormat.format(selectedDate),
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    fontSize: 18
-                ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(
-                vertical: 10
-              ),
-              child: Text(
-                'Select Time',
-                style: Theme.of(context).textTheme.bodyMedium,
-                textAlign: TextAlign.start,
-              ),
-            ),
-            GestureDetector(
-              onTap: ()async{
-                final selected = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.now(),
-                );
-                selected != null? selectedTime=selected:null;
-                setState(() {
-
-                });
-              },
-              child: Text(
-                selectedTime.format(context),
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  fontSize: 18
-                ),
-              ),
+              child: const Text('ADD TASK'),
             ),
           ],
         ),

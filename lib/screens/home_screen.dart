@@ -6,14 +6,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:todo_app/widgets/app_bottom_sheet.dart';
 class HomeScreen extends StatefulWidget {
   static const String routeName='/';
+
+  const HomeScreen({super.key});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Widget> tabs=[
-    ListTab(),
-    SettingTab(),
+    const ListTab(),
+    const SettingTab(),
   ];
 
   int currentIndex =0;
@@ -24,18 +26,20 @@ class _HomeScreenState extends State<HomeScreen> {
      AppLocalizations.of(context)!.setting,
     ];
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Padding(
-          padding: EdgeInsetsDirectional.only(start: 25),
+          padding: const EdgeInsetsDirectional.only(start: 25),
           child: Text(tabsName[currentIndex]),
         ),
       ),
       
       bottomNavigationBar: BottomAppBar(
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        notchMargin: 12,
+        notchMargin: 10,
         elevation: 0,
-        shape: const CircularNotchedRectangle(),
+        padding: EdgeInsets.zero,
+        shape:  CircularNotchedRectangle(),
         child: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
@@ -58,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: (){
             showModalBottomSheet(
                 context: context,
-                builder: (context)=> AppBottomSheet(),
+                builder: (context)=> const AppBottomSheet(),
             );
           },
         shape: CircleBorder(
