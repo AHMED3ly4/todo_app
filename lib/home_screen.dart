@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
      AppLocalizations.of(context)!.setting,
     ];
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsetsDirectional.only(start: 25),
