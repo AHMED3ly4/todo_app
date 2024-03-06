@@ -6,6 +6,7 @@ import 'package:todo_app/app_theme.dart';
 import 'package:todo_app/firebase_utils.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/providers/tasks_provider.dart';
+import 'package:todo_app/widgets/my_elevated-button.dart';
 import 'package:todo_app/widgets/myTextFormField.dart';
 import 'package:todo_app/widgets/select_date.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -49,7 +50,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
           children: [
             Container(
               height: screenHeight*0.22,
-              color: AppTheme.blue,
+              color: AppTheme.lightBlue,
             ),
             Container(
               width: double.infinity,
@@ -67,13 +68,17 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     height: screenHeight*0.75,
                     child: Column(
                       children: [
+                        Text(
+                          AppLocalizations.of(context)!.editTask,
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
                         MyTextFormField(
-                          hintText: 'Title',
+                          hintText: AppLocalizations.of(context)!.title,
                           controller: titleController,
                         ),
                         const SizedBox(height: 20,),
                         MyTextFormField(
-                          hintText: 'Description',
+                          hintText: AppLocalizations.of(context)!.description,
                           controller: descriptionController,
                           maxLines: 6,
                         ),
@@ -81,7 +86,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                         SizedBox(
                           width: double.infinity,
                           child: Text(
-                            'Select Date',
+                            AppLocalizations.of(context)!.selectDate,
                             style: Theme.of(context).textTheme.bodyMedium,
                             textAlign: TextAlign.start,
                           ),
@@ -100,20 +105,14 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                             text: dateFormat.format(selectedDate!),
                         ),
                         const Spacer(),
-                        Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.all(50),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.blue,
-                              foregroundColor: AppTheme.white
-                            ),
+                        MyElevatedButton(
+                            label: AppLocalizations.of(context)!.saveChanges,
                             onPressed: (){
                               FirebaseUtils.editTaskData(
-                                  taskToEdit.id,
-                                  titleController.text,
-                                  descriptionController.text,
-                                  selectedDate!,
+                                taskToEdit.id,
+                                titleController.text,
+                                descriptionController.text,
+                                selectedDate!,
                               ).timeout(
                                 const Duration(seconds: 1),
                                 onTimeout: (){
@@ -121,7 +120,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                                   Navigator.of(context).pop();
                                 },
                               ).catchError(
-                                  (_){
+                                      (_){
                                     Fluttertoast.showToast(
                                         msg: "OPS! something went wrong.",
                                         toastLength: Toast.LENGTH_SHORT,
@@ -136,14 +135,51 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
                               );
                             },
-                            child:  Text('EDIT TASK',
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontSize: 18,
-                              color: AppTheme.white,
-                            ),
-                            ),
-                          ),
                         ),
+                        // Container(
+                        //   width: double.infinity,
+                        //   margin: const EdgeInsets.all(50),
+                        //   child: ElevatedButton(
+                        //     style: ElevatedButton.styleFrom(
+                        //       backgroundColor: AppTheme.lightBlue,
+                        //       foregroundColor: AppTheme.white
+                        //     ),
+                        //     onPressed: (){
+                        //       FirebaseUtils.editTaskData(
+                        //           taskToEdit.id,
+                        //           titleController.text,
+                        //           descriptionController.text,
+                        //           selectedDate!,
+                        //       ).timeout(
+                        //         const Duration(seconds: 1),
+                        //         onTimeout: (){
+                        //           Provider.of<TasksProvider>(context,listen: false).getTasks();
+                        //           Navigator.of(context).pop();
+                        //         },
+                        //       ).catchError(
+                        //           (_){
+                        //             Fluttertoast.showToast(
+                        //                 msg: "OPS! something went wrong.",
+                        //                 toastLength: Toast.LENGTH_SHORT,
+                        //                 gravity: ToastGravity.BOTTOM,
+                        //                 timeInSecForIosWeb: 1,
+                        //                 backgroundColor: Colors.red,
+                        //                 textColor: Colors.white,
+                        //                 fontSize: 16.0
+                        //             );
+                        //             Navigator.of(context).pop();
+                        //           }
+                        //
+                        //       );
+                        //     },
+                        //     child:  Text('EDIT TASK',
+                        //     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        //       fontSize: 18,
+                        //       color: AppTheme.white,
+                        //     ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

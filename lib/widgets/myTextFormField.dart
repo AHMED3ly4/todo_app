@@ -15,9 +15,10 @@ MyTextFormField({required this.controller,required this.hintText,this.maxLines=1
         decoration:  InputDecoration(
           label: Text(
             hintText,
-            style: Theme.of(context).textTheme.bodyMedium,
           ),
+          labelStyle:Theme.of(context).textTheme.bodyMedium,
         ),
+        style: Theme.of(context).textTheme.bodyMedium,
         maxLines: maxLines,
       ),
     );
