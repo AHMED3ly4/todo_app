@@ -1,5 +1,23 @@
 {
   "toDoList": "To Do List",
   "list": "List",
-  "setting": "Setting"
+  "setting": "Setting",
+  "mode": "Mode",
+  "language": "Language",
+  "arabic": "Arabic",
+  "english": "English",
+  "dark": "Dark",
+  "light": "Light",
+  "addNewTask": "ADD NEW TASK",
+  "enterTaskTitle": "Enter task title",
+  "addDescription": "Add description",
+  "selectDate": "Select date",
+  "addTask": "Add task",
+  "title": "Title",
+  "description": "Description",
+  "editTask": "Edit task",
+  "saveChanges": "Save changes",
+  "done": "Done!",
+  "delete": "Delete",
+  "logout": "Logout"
 }

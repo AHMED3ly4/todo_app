@@ -8,7 +8,7 @@ import 'package:todo_app/firebase_utils.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/providers/tasks_provider.dart';
 import 'package:todo_app/screens/edit_task_screen.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../app_theme.dart';
 
 class TaskItem extends StatelessWidget {
@@ -19,7 +19,9 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if(task.isDone){
-      isDoneWidget=Text('Done!',style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+      isDoneWidget=Text(
+        AppLocalizations.of(context)!.done,
+        style: Theme.of(context).textTheme.headlineLarge!.copyWith(
         color: AppTheme.green,
         fontSize: 22,
       ),);
@@ -29,7 +31,7 @@ class TaskItem extends StatelessWidget {
         height: 34,
         width: 69,
         decoration: BoxDecoration(
-            color:AppTheme.blue,
+            color:AppTheme.lightBlue,
             borderRadius: BorderRadius.circular(10)
         ),
         child: const Icon(
@@ -38,9 +40,8 @@ class TaskItem extends StatelessWidget {
           size: 38,
         ),
       );
-      color=AppTheme.blue;
+      color=AppTheme.lightBlue;
     }
-
 
     return GestureDetector(
       onTap: (){
@@ -58,7 +59,7 @@ class TaskItem extends StatelessWidget {
             children:  [
               SlidableAction(
                 onPressed:(BuildContext ctx){
-                  FirebaseUtils.deleteTask(task.id).timeout(Duration(milliseconds: 50),
+                  FirebaseUtils.deleteTask(task.id).timeout(const Duration(milliseconds: 50),
                       onTimeout: (){
                     Provider.of<TasksProvider>(context,listen: false).getTasks();
                       }).catchError((_){
@@ -76,7 +77,7 @@ class TaskItem extends StatelessWidget {
                 backgroundColor: const Color(0xFFFE4A49),
                 foregroundColor: Colors.white,
                 icon: Icons.delete,
-                label: 'Delete',
+                label: AppLocalizations.of(context)!.delete,
               ),
             ],
           ),

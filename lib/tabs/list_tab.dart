@@ -29,14 +29,14 @@ class ListTab extends StatelessWidget {
           ),
           dayOptions: DayOptions(
             compactMode: true,
-            weekDaySelectedColor: AppTheme.blue,
-            selectedBackgroundColor: AppTheme.blue,
+            weekDaySelectedColor: AppTheme.lightBlue,
+            selectedBackgroundColor: AppTheme.lightBlue,
             disableDaysBeforeNow: true,
           ),
           headerOptions: HeaderOptions(
             weekDayStringType: WeekDayStringTypes.SHORT,
             monthStringType: MonthStringTypes.FULL,
-            backgroundColor: AppTheme.blue,
+            backgroundColor: AppTheme.lightBlue,
             headerTextColor: Colors.black,
           ),
           dateTime: CalendarDateTime(year: tasksProvider.date.year,
