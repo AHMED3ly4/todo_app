@@ -7,15 +7,15 @@ import 'package:todo_app/widgets/app_bottom_sheet.dart';
 class HomeScreen extends StatefulWidget {
   static const String routeName='/';
 
-  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Widget> tabs=[
-    const ListTab(),
-    const SettingTab(),
+     const ListTab(),
+     SettingTab(),
   ];
 
   int currentIndex =0;
@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: currentIndex ==1? true:false,
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsetsDirectional.only(start: 25),
@@ -62,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: (){
             showModalBottomSheet(
                 context: context,
+                isScrollControlled: true,
                 builder: (context)=> const AppBottomSheet(),
             );
           },

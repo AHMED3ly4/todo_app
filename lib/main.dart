@@ -52,6 +52,8 @@ class _TodoAppState extends State<TodoApp> {
         EditTaskScreen.routeName : (context) => EditTaskScreen(),
       },
       theme: AppTheme.appLightTheme,
+      darkTheme: AppTheme.appDarkTheme,
+      themeMode: settingProvider.appMode,
       localizationsDelegates:AppLocalizations.localizationsDelegates,
       supportedLocales: const [
         Locale('en'), // English
