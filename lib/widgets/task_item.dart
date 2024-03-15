@@ -10,6 +10,7 @@ import 'package:todo_app/providers/tasks_provider.dart';
 import 'package:todo_app/screens/edit_task_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../app_theme.dart';
+import '../providers/user_provider.dart';
 
 class TaskItem extends StatelessWidget {
   TaskModel task;
@@ -18,6 +19,7 @@ class TaskItem extends StatelessWidget {
   TaskItem(this.task);
   @override
   Widget build(BuildContext context) {
+    final userProvider =Provider.of<UserProvider>(context);
     if(task.isDone){
       isDoneWidget=Text(
         AppLocalizations.of(context)!.done,
@@ -59,9 +61,8 @@ class TaskItem extends StatelessWidget {
             children:  [
               SlidableAction(
                 onPressed:(BuildContext ctx){
-                  FirebaseUtils.deleteTask(task.id).timeout(const Duration(milliseconds: 50),
-                      onTimeout: (){
-                    Provider.of<TasksProvider>(context,listen: false).getTasks();
+                  FirebaseUtils.deleteTask(task.id,userProvider.user!.userId).then( (value){
+                    Provider.of<TasksProvider>(context,listen: false).getTasks(userProvider.user!.userId);
                       }).catchError((_){
                     Fluttertoast.showToast(
                         msg: "OPS! something went wrong.",
@@ -118,11 +119,10 @@ class TaskItem extends StatelessWidget {
                 const Spacer(),
                 InkWell(
                   onTap: (){
-                    FirebaseUtils.editTaskSituation(task.id).timeout(
-                      const Duration(seconds: 1),
-                      onTimeout: (){
-                        Provider.of<TasksProvider>(context,listen: false).getTasks();
-                      }
+                    FirebaseUtils.editTaskSituation(task.id,userProvider.user!.userId).then(
+                            (_){
+                          Provider.of<TasksProvider>(context,listen: false).getTasks(userProvider.user!.userId);
+                        }
                     ).catchError(
                         (_){
                           Fluttertoast.showToast(

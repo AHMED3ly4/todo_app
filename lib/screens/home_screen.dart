@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Widget> tabs=[
-     const ListTab(),
+      ListTab(),
      SettingTab(),
   ];
 
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         notchMargin: 10,
         elevation: 0,
         padding: EdgeInsets.zero,
-        shape:  CircularNotchedRectangle(),
+        shape:  const CircularNotchedRectangle(),
         child: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
