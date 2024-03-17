@@ -7,6 +7,7 @@ import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/screens/home_screen.dart';
 import '../../widgets/myTextFormField.dart';
 import '../../widgets/my_elevated_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const  routeName='register screen route name';
@@ -48,27 +49,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 MyTextFormField(
                   validator: (value){
                     if(value==null || value==''){
-                      return'email can not be empty';
+                      return AppLocalizations.of(context)!.emailCanNotBeEmpty;
                     }
                     return null;
                   },
                   controller: nameController,
-                  labelText: 'Name',
+                  labelText: AppLocalizations.of(context)!.name,
                 ),
                 MyTextFormField(
                   validator: (value){
                     if(value==null || value==''){
-                      return'email can not be empty';
+                      return AppLocalizations.of(context)!.passwordCanNotBeEmpty;
                     }
                     return null;
                   },
                   controller: emailController,
-                  labelText: 'Email',
+                  labelText: AppLocalizations.of(context)!.email,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 MyTextFormField(
                   controller: passwordController,
-                  labelText: 'Password',
+                  labelText: AppLocalizations.of(context)!.password,
                   isPassword: isPasswordObscure,
                   suffixIcon: IconButton(
                     onPressed: (){
@@ -79,15 +80,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   validator: (password){
                     if(password ==null ||password.isEmpty){
-                      return'password can not be empty';
+                      return AppLocalizations.of(context)!.passwordCanNotBeEmpty;
                     }else if(password.length<6){
-                      return 'Password must be more than 6 characters';
+                      return AppLocalizations.of(context)!.passwordCantBeLessThan;
                     }
                     return null;
                   },
                 ),
                 MyElevatedButton(
-                  label: 'Register',
+                  label: AppLocalizations.of(context)!.register,
                   onPressed: (){
                     if(formKey.currentState?.validate()==true){
                       FirebaseUtils.register(
@@ -100,11 +101,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 (error){
                               if(error is FirebaseAuthException){
                                 Fluttertoast.showToast(
-                                  msg: error.message ?? "OPS! something went wrong.",
+                                  msg: error.message ?? AppLocalizations.of(context)!.sthWentWrong,
                                 );
                               }else {
                                 Fluttertoast.showToast(
-                                    msg: "OPS! something went wrong.");
+                                    msg: AppLocalizations.of(context)!.sthWentWrong);
                               }
                               return null;
                             }
@@ -117,8 +118,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onPressed: (){
                     Navigator.of(context).pop();
                   },
-                  child: const Text(
-                    'Already have an account?  login now',
+                  child:  Text(
+                    AppLocalizations.of(context)!.loginNow,
                   ),
                 ),
               ],

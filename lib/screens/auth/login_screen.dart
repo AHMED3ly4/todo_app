@@ -6,7 +6,7 @@ import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/screens/auth/register_screen.dart';
 import 'package:todo_app/widgets/myTextFormField.dart';
 import 'package:todo_app/widgets/my_elevated_button.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../firebase_utils.dart';
 import '../home_screen.dart';
 
@@ -48,17 +48,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 MyTextFormField(
                   validator: (value){
                     if(value==null || value==''){
-                      return'email can not be empty';
+                      return AppLocalizations.of(context)!.emailCanNotBeEmpty;
                     }
                     return null;
                   },
                     controller: emailController,
-                    labelText: 'Email',
+                    labelText: AppLocalizations.of(context)!.email,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 MyTextFormField(
                     controller: passwordController,
-                    labelText: 'Password',
+                    labelText: AppLocalizations.of(context)!.password,
                   isPassword: isPasswordObscure,
                   suffixIcon: IconButton(
                       onPressed: (){
@@ -69,15 +69,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   validator: (password){
                       if(password ==null ||password.isEmpty){
-                        return'password can not be empty';
+                        return AppLocalizations.of(context)!.passwordCanNotBeEmpty;
                       }else if(password.length<6){
-                        return 'Password must be more than 6 characters';
+                        return AppLocalizations.of(context)!.passwordCantBeLessThan;
                       }
                       return null;
                   },
                 ),
                 MyElevatedButton(
-                    label: 'Login',
+                    label: AppLocalizations.of(context)!.login,
                     onPressed: (){
                       if(formKey.currentState?.validate()==true){
                         FirebaseUtils.login(
@@ -90,11 +90,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 (error){
                               if(error is FirebaseAuthException){
                                 Fluttertoast.showToast(
-                                  msg: error.message ?? "OPS! something went wrong.",
+                                  msg: error.message ?? AppLocalizations.of(context)!.sthWentWrong,
                                 );
                               }else {
                                 Fluttertoast.showToast(
-                                    msg: "OPS! something went wrong.");
+                                    msg: AppLocalizations.of(context)!.sthWentWrong);
                               }
                             }
                         );
@@ -105,8 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: (){
                       Navigator.of(context).pushNamed(RegisterScreen.routeName);
                     },
-                    child: const Text(
-                      'Don\'t have account?  register now',
+                    child: Text(
+                      AppLocalizations.of(context)!.registerNow,
                     ),
                 ),
               ],
