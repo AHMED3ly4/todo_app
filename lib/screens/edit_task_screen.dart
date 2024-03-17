@@ -6,7 +6,8 @@ import 'package:todo_app/app_theme.dart';
 import 'package:todo_app/firebase_utils.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/providers/tasks_provider.dart';
-import 'package:todo_app/widgets/my_elevated-button.dart';
+import 'package:todo_app/providers/user_provider.dart';
+import 'package:todo_app/widgets/my_elevated_button.dart';
 import 'package:todo_app/widgets/myTextFormField.dart';
 import 'package:todo_app/widgets/select_date.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -29,7 +30,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     selectedDate ==null? selectedDate =taskToEdit.dateTime:null;
     titleController.text.isEmpty ? titleController.text= taskToEdit.title: null;
     descriptionController.text.isEmpty ? descriptionController.text= taskToEdit.description: null;
-
+    final userProvider =Provider.of<UserProvider>(context);
     double screenHeight =MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -73,12 +74,12 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                           style: Theme.of(context).textTheme.headlineLarge,
                         ),
                         MyTextFormField(
-                          hintText: AppLocalizations.of(context)!.title,
+                          labelText: AppLocalizations.of(context)!.title,
                           controller: titleController,
                         ),
                         const SizedBox(height: 20,),
                         MyTextFormField(
-                          hintText: AppLocalizations.of(context)!.description,
+                          labelText: AppLocalizations.of(context)!.description,
                           controller: descriptionController,
                           maxLines: 6,
                         ),
@@ -113,12 +114,12 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                                 titleController.text,
                                 descriptionController.text,
                                 selectedDate!,
-                              ).timeout(
-                                const Duration(seconds: 1),
-                                onTimeout: (){
-                                  Provider.of<TasksProvider>(context,listen: false).getTasks();
-                                  Navigator.of(context).pop();
-                                },
+                                  userProvider.user!.userId
+                              ).then(
+                                      (_){
+                                    Provider.of<TasksProvider>(context,listen: false).getTasks(userProvider.user!.userId);
+                                    Navigator.of(context).pop();
+                                  }
                               ).catchError(
                                       (_){
                                     Fluttertoast.showToast(
@@ -136,50 +137,6 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                               );
                             },
                         ),
-                        // Container(
-                        //   width: double.infinity,
-                        //   margin: const EdgeInsets.all(50),
-                        //   child: ElevatedButton(
-                        //     style: ElevatedButton.styleFrom(
-                        //       backgroundColor: AppTheme.lightBlue,
-                        //       foregroundColor: AppTheme.white
-                        //     ),
-                        //     onPressed: (){
-                        //       FirebaseUtils.editTaskData(
-                        //           taskToEdit.id,
-                        //           titleController.text,
-                        //           descriptionController.text,
-                        //           selectedDate!,
-                        //       ).timeout(
-                        //         const Duration(seconds: 1),
-                        //         onTimeout: (){
-                        //           Provider.of<TasksProvider>(context,listen: false).getTasks();
-                        //           Navigator.of(context).pop();
-                        //         },
-                        //       ).catchError(
-                        //           (_){
-                        //             Fluttertoast.showToast(
-                        //                 msg: "OPS! something went wrong.",
-                        //                 toastLength: Toast.LENGTH_SHORT,
-                        //                 gravity: ToastGravity.BOTTOM,
-                        //                 timeInSecForIosWeb: 1,
-                        //                 backgroundColor: Colors.red,
-                        //                 textColor: Colors.white,
-                        //                 fontSize: 16.0
-                        //             );
-                        //             Navigator.of(context).pop();
-                        //           }
-                        //
-                        //       );
-                        //     },
-                        //     child:  Text('EDIT TASK',
-                        //     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        //       fontSize: 18,
-                        //       color: AppTheme.white,
-                        //     ),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
