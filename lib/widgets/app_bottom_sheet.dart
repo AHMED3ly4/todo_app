@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/firebase_utils.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/providers/tasks_provider.dart';
-import 'package:todo_app/widgets/my_elevated-button.dart';
+import 'package:todo_app/widgets/my_elevated_button.dart';
 import 'package:todo_app/widgets/myTextFormField.dart';
 import 'package:todo_app/widgets/select_date.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../providers/user_provider.dart';
 
 
 class AppBottomSheet extends StatefulWidget {
@@ -26,6 +28,7 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
   @override
   Widget build(BuildContext context) {
     var now = DateTime.now();
+    final userProvider =Provider.of<UserProvider>(context);
     return Padding(
       padding:  EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -42,11 +45,11 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
               ),
               MyTextFormField(
                   controller: taskNameController,
-                  hintText: AppLocalizations.of(context)!.enterTaskTitle,
+                  labelText: AppLocalizations.of(context)!.enterTaskTitle,
               ),
               MyTextFormField(
                   controller: taskDescController,
-                  hintText: AppLocalizations.of(context)!.addDescription,
+                  labelText: AppLocalizations.of(context)!.addDescription,
                 maxLines: 6,
               ),
               Container(
@@ -76,22 +79,23 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
               ),
               MyElevatedButton(
                   label: AppLocalizations.of(context)!.addTask,
-                  margin: EdgeInsets.symmetric(
+                  margin: const EdgeInsets.symmetric(
                     horizontal:50,
                     vertical: 20
                   ),
                   onPressed: () {
-                    FirebaseUtils.addTaskToFireBase(TaskModel(
+                    FirebaseUtils.addTaskToFireBase(
+                      TaskModel(
                       title: taskNameController.text,
                       description: taskDescController.text,
                       dateTime: selectedDate,
                     ),
-                    ).timeout(
-                      const Duration(seconds: 1),
-                      onTimeout: () {
-                        Provider.of<TasksProvider>(context,listen: false).getTasks();
-                        Navigator.of(context).pop(context);
-                      },
+                        userProvider.user!.userId
+                    ).then(
+                            (value) {
+                          Provider.of<TasksProvider>(context,listen: false).getTasks(userProvider.user!.userId);
+                          Navigator.of(context).pop(context);
+                        }
                     ).catchError((_){
                       Fluttertoast.showToast(
                           msg: "OPS! something went wrong.",

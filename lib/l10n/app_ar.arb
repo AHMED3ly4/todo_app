@@ -19,5 +19,16 @@
   "saveChanges": "حفظ التغييرات",
   "done": "تم!",
   "delete": "حذف",
-  "logout": "الخروج من الحساب"
+  "logout": "الخروج من الحساب",
+  "email": "البريد الالكتروني",
+  "password": "كلمة السر",
+  "login": "دخول",
+  "registerNow": "ليس لديك حساب ؟ سجل الان",
+  "register": "تسجيل",
+  "name": "الاسم",
+  "loginNow": "بالفعل لديك حساب ؟ ادخل الان",
+  "sthWentWrong": "حدث خطأ ما",
+  "emailCanNotBeEmpty": "البريد لا يمكن ان يكون فارغا",
+  "passwordCanNotBeEmpty": "كلمة السر لا يمكن ان يكون فارغا",
+  "passwordCantBeLessThan": "يجب الا يقل عن 6 حروف"
 }

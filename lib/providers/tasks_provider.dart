@@ -7,8 +7,8 @@ class TasksProvider with ChangeNotifier{
 
   DateTime date=DateTime.now();
 
-  void getTasks()async{
-    final allTasks = await FirebaseUtils.getAllTasksFromFireStore();
+  void getTasks(String userId)async{
+    final allTasks = await FirebaseUtils.getAllTasksFromFireStore(userId);
     tasks = allTasks.where((task) =>
         task.dateTime.day == date.day &&
         task.dateTime.month == date.month &&
@@ -17,10 +17,14 @@ class TasksProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  void changeDate(DateTime dateToChange){
+  void changeDate(DateTime dateToChange,String userId){
     date=dateToChange;
-    getTasks();
+    getTasks(userId);
     notifyListeners();
   }
 
+  void clear(){
+     tasks=[];
+     date=DateTime.now();
+  }
 }

@@ -19,5 +19,16 @@
   "saveChanges": "Save changes",
   "done": "Done!",
   "delete": "Delete",
-  "logout": "Logout"
+  "logout": "Logout",
+  "email": "Email",
+  "password": "Password",
+  "login": "Login",
+  "registerNow": "Don't have an account? register now",
+  "register": "Register",
+  "name": "Name",
+  "loginNow": "Already have an account? login now",
+  "sthWentWrong": "OPS! something went wrong.",
+  "emailCanNotBeEmpty": "Email can not be empty",
+  "passwordCanNotBeEmpty": "Password can not be empty",
+  "passwordCantBeLessThan": "Password must be more than 6 characters"
 }

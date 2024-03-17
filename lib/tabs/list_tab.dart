@@ -2,20 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_timeline_calendar/timeline/flutter_timeline_calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/app_theme.dart';
-import 'package:todo_app/firebase_utils.dart';
-import 'package:todo_app/providers/setting_provider.dart';
 import 'package:todo_app/providers/tasks_provider.dart';
 
+import '../providers/user_provider.dart';
 import '../widgets/task_item.dart';
 
-class ListTab extends StatelessWidget {
+class ListTab extends StatefulWidget {
   static const String routeName = 'list tab';
 
-  const ListTab({super.key});
+
+  @override
+  State<ListTab> createState() => _ListTabState();
+}
+
+class _ListTabState extends State<ListTab> {
+  late UserProvider userProvider;
+  late TasksProvider tasksProvider;
+  bool shouldGetTask=true;
+
   @override
   Widget build(BuildContext context) {
-    TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
-    SettingProvider settingProvider = Provider.of(context);
+    if(shouldGetTask) {
+      userProvider = Provider.of<UserProvider>(context);
+      tasksProvider = Provider.of<TasksProvider>(context)
+        ..getTasks(userProvider.user!.userId);
+      shouldGetTask=false;
+    }
     return Column(
       children: [
         TimelineCalendar(
@@ -44,7 +56,7 @@ class ListTab extends StatelessWidget {
             day: tasksProvider.date.day,
           ),
           onChangeDateTime: (calenderDateTime) {
-            tasksProvider.changeDate(calenderDateTime.toDateTime());
+            tasksProvider.changeDate(calenderDateTime.toDateTime(),userProvider.user!.userId);
           },
         ),
         Expanded(
